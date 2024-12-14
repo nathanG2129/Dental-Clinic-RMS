@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
         // If registering as a dentist, create dentist record
         if ($request->role === 'dentist') {
             Dentist::create([
-                'name' => $request->name,
+                'dentist_name' => $request->name,
                 'user_id' => $user->id,
                 'specialization' => 'General Dentistry', // Default value
                 'contact_information' => $request->email, // Using email as initial contact

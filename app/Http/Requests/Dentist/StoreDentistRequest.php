@@ -17,7 +17,6 @@ class StoreDentistRequest extends FormRequest
             'dentist_name' => ['required', 'string', 'max:255'],
             'specialization' => ['required', 'string', 'max:255'],
             'contact_information' => ['required', 'string', 'max:255'],
-            'user_id' => ['required', 'exists:users,id']
         ];
     }
 }

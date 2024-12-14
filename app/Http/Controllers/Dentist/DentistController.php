@@ -19,39 +19,20 @@ class DentistController extends Controller
 
     public function create()
     {
-        $users = User::where('role', 'dentist')
-            ->whereDoesntHave('dentist')
-            ->orderBy('name')
-            ->get(['id', 'name', 'email'])
-            ->map(function($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name . ' (' . $user->email . ')'
-                ];
-            })
-            ->pluck('name', 'id')
-            ->toArray();
-
-        if (empty($users)) {
-            return redirect()->route('admin.dentists.index')
-                ->with('error', 'No available dentist user accounts. Please create a user account with dentist role first.');
-        }
-
-        return view('dentists.create', compact('users'));
+        return view('dentists.create');
     }
 
     public function store(StoreDentistRequest $request)
     {
         $role = auth()->user()->role;
         $dentist = Dentist::create([
-            'dentist_name' => User::find($request->user_id)->name,
-            'user_id' => $request->user_id,
+            'dentist_name' => $request->dentist_name,
             'specialization' => $request->specialization,
             'contact_information' => $request->contact_information,
         ]);
         
         return redirect()->route($role . '.dentists.show', $dentist)
-            ->with('success', 'Dentist created successfully.');
+            ->with('success', 'Dentist information updated successfully.');
     }
 
     public function show(Dentist $dentist)
