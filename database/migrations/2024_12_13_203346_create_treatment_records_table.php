@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('treatment_records', function (Blueprint $table) {
             $table->id('record_id');
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('dentist_id')->constrained('dentists')->onDelete('cascade');
+            $table->foreignId('patient_id')->references('patient_id')->on('patients')->onDelete('cascade');
+            $table->foreignId('dentist_id')->references('dentist_id')->on('dentists')->onDelete('cascade');
             $table->string('treatment_type');
             $table->text('treatment_details');
             $table->date('treatment_date');
