@@ -34,8 +34,8 @@ Route::middleware(['auth', 'verified', 'role:dentist'])->prefix('dentist')->name
 // Employee Routes
 Route::middleware(['auth', 'verified', 'role:employee'])->prefix('employee')->name('employee.')->group(function () {
     Route::get('/dashboard', [EmployeeDashboardController::class, 'index'])->name('dashboard');
-    Route::resource('patients', PatientController::class)->only(['index', 'create', 'store', 'show']);
-    Route::resource('appointments', AppointmentController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('patients', PatientController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::resource('appointments', AppointmentController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {
