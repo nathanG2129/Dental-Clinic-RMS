@@ -6,7 +6,10 @@
     </x-slot>
 
     <x-card>
-        <form method="POST" action="{{ route('patients.store') }}" class="space-y-6">
+        @php
+            $role = auth()->user()->role;
+        @endphp
+        <form method="POST" action="{{ route($role . '.patients.store') }}" class="space-y-6">
             @csrf
 
             <!-- Patient Name -->

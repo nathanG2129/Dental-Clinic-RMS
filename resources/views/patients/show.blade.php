@@ -4,8 +4,11 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Patient Details') }}
             </h2>
-            @if(auth()->user()->role !== 'dentist')
-                <a href="{{ route('patients.edit', $patient) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+            @php
+                $role = auth()->user()->role;
+            @endphp
+            @if($role !== 'dentist')
+                <a href="{{ route($role . '.patients.edit', $patient) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
                     Edit Patient
                 </a>
             @endif
@@ -42,9 +45,9 @@
         <!-- Appointments -->
         <x-card title="Appointments">
             <div class="space-y-4">
-                @if(auth()->user()->role !== 'dentist')
+                @if($role !== 'dentist')
                     <div class="mb-4">
-                        <a href="{{ route('appointments.create', ['patient_id' => $patient->patient_id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                        <a href="{{ route($role . '.appointments.create', ['patient_id' => $patient->patient_id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                             Schedule New Appointment
                         </a>
                     </div>

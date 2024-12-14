@@ -1,128 +1,131 @@
-&lt;x-layout.app&gt;
-    &lt;x-slot name="header"&gt;
-        &lt;div class="flex justify-between items-center"&gt;
-            &lt;h2 class="font-semibold text-xl text-gray-800 leading-tight"&gt;
+<x-layout.app>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Treatment Record Details') }}
-            &lt;/h2&gt;
-            &lt;div class="flex space-x-2"&gt;
-                &lt;a href="{{ route('treatment-records.edit', $treatmentRecord) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"&gt;
+            </h2>
+            @php
+                $role = auth()->user()->role;
+            @endphp
+            <div class="flex space-x-2">
+                <a href="{{ route($role . '.treatment-records.edit', $treatmentRecord) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
                     Edit Record
-                &lt;/a&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/x-slot&gt;
+                </a>
+            </div>
+        </div>
+    </x-slot>
 
-    &lt;div class="space-y-6"&gt;
-        &lt;!-- Treatment Information --&gt;
-        &lt;x-card&gt;
-            &lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;
-                &lt;div&gt;
-                    &lt;h3 class="text-lg font-medium text-gray-900 mb-4"&gt;Treatment Details&lt;/h3&gt;
-                    &lt;dl class="space-y-3"&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Treatment Type&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;treatment_type }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Treatment Date&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;treatment_date-&gt;format('F d, Y') }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Treatment Details&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;treatment_details }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        @if($treatmentRecord-&gt;notes)
-                            &lt;div&gt;
-                                &lt;dt class="text-sm font-medium text-gray-500"&gt;Additional Notes&lt;/dt&gt;
-                                &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;notes }}&lt;/dd&gt;
-                            &lt;/div&gt;
+    <div class="space-y-6">
+        <!-- Treatment Information -->
+        <x-card>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Treatment Details</h3>
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Treatment Type</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->treatment_type }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Treatment Date</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->treatment_date->format('F d, Y') }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Treatment Details</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->treatment_details }}</dd>
+                        </div>
+                        @if($treatmentRecord->notes)
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Additional Notes</dt>
+                                <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->notes }}</dd>
+                            </div>
                         @endif
-                    &lt;/dl&gt;
-                &lt;/div&gt;
+                    </dl>
+                </div>
 
-                &lt;div&gt;
-                    &lt;h3 class="text-lg font-medium text-gray-900 mb-4"&gt;Payment Information&lt;/h3&gt;
-                    &lt;dl class="space-y-3"&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Cost&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;₱{{ number_format($treatmentRecord-&gt;cost, 2) }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Payment Status&lt;/dt&gt;
-                            &lt;dd class="mt-1"&gt;
-                                &lt;span class="px-2 py-1 text-xs rounded-full {{ 
-                                    $treatmentRecord-&gt;payment_status === 'paid' ? 'bg-green-100 text-green-800' : 
-                                    ($treatmentRecord-&gt;payment_status === 'partially_paid' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') 
-                                }}"&gt;
-                                    {{ ucfirst($treatmentRecord-&gt;payment_status) }}
-                                &lt;/span&gt;
-                            &lt;/dd&gt;
-                        &lt;/div&gt;
-                    &lt;/dl&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/x-card&gt;
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Information</h3>
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Cost</dt>
+                            <dd class="mt-1 text-sm text-gray-900">₱{{ number_format($treatmentRecord->cost, 2) }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Payment Status</dt>
+                            <dd class="mt-1">
+                                <span class="px-2 py-1 text-xs rounded-full {{ 
+                                    $treatmentRecord->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 
+                                    ($treatmentRecord->payment_status === 'partially_paid' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') 
+                                }}">
+                                    {{ ucfirst($treatmentRecord->payment_status) }}
+                                </span>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </x-card>
 
-        &lt;!-- People Involved --&gt;
-        &lt;x-card&gt;
-            &lt;div class="grid grid-cols-1 md:grid-cols-2 gap-6"&gt;
-                &lt;div&gt;
-                    &lt;h3 class="text-lg font-medium text-gray-900 mb-4"&gt;Patient Information&lt;/h3&gt;
-                    &lt;dl class="space-y-3"&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Name&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;patient-&gt;patient_name }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Contact Information&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;patient-&gt;contact_information }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div class="mt-4"&gt;
-                            &lt;a href="{{ route('patients.show', $treatmentRecord-&gt;patient) }}" class="text-blue-500 hover:text-blue-700"&gt;
+        <!-- People Involved -->
+        <x-card>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Patient Information</h3>
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Name</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->patient->patient_name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Contact Information</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->patient->contact_information }}</dd>
+                        </div>
+                        <div class="mt-4">
+                            <a href="{{ route($role . '.patients.show', $treatmentRecord->patient) }}" class="text-blue-500 hover:text-blue-700">
                                 View Patient History
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/dl&gt;
-                &lt;/div&gt;
+                            </a>
+                        </div>
+                    </dl>
+                </div>
 
-                &lt;div&gt;
-                    &lt;h3 class="text-lg font-medium text-gray-900 mb-4"&gt;Dentist Information&lt;/h3&gt;
-                    &lt;dl class="space-y-3"&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Name&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;dentist-&gt;dentist_name }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;dt class="text-sm font-medium text-gray-500"&gt;Specialization&lt;/dt&gt;
-                            &lt;dd class="mt-1 text-sm text-gray-900"&gt;{{ $treatmentRecord-&gt;dentist-&gt;specialization }}&lt;/dd&gt;
-                        &lt;/div&gt;
-                        &lt;div class="mt-4"&gt;
-                            &lt;a href="{{ route('dentists.show', $treatmentRecord-&gt;dentist) }}" class="text-blue-500 hover:text-blue-700"&gt;
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Dentist Information</h3>
+                    <dl class="space-y-3">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Name</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->dentist->dentist_name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Specialization</dt>
+                            <dd class="mt-1 text-sm text-gray-900">{{ $treatmentRecord->dentist->specialization }}</dd>
+                        </div>
+                        <div class="mt-4">
+                            <a href="{{ route($role . '.dentists.show', $treatmentRecord->dentist) }}" class="text-blue-500 hover:text-blue-700">
                                 View Dentist Profile
-                            &lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/dl&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/x-card&gt;
+                            </a>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </x-card>
 
-        &lt;!-- Actions --&gt;
-        &lt;x-card&gt;
-            &lt;div class="flex justify-between items-center"&gt;
-                &lt;div class="text-sm text-gray-500"&gt;
-                    Created: {{ $treatmentRecord-&gt;created_at-&gt;format('F d, Y h:i A') }}
-                    @if($treatmentRecord-&gt;updated_at-&gt;ne($treatmentRecord-&gt;created_at))
-                        &lt;br&gt;Last Updated: {{ $treatmentRecord-&gt;updated_at-&gt;format('F d, Y h:i A') }}
+        <!-- Actions -->
+        <x-card>
+            <div class="flex justify-between items-center">
+                <div class="text-sm text-gray-500">
+                    Created: {{ $treatmentRecord->created_at->format('F d, Y h:i A') }}
+                    @if($treatmentRecord->updated_at->ne($treatmentRecord->created_at))
+                        <br>Last Updated: {{ $treatmentRecord->updated_at->format('F d, Y h:i A') }}
                     @endif
-                &lt;/div&gt;
-                &lt;form method="POST" action="{{ route('treatment-records.destroy', $treatmentRecord) }}" class="inline"&gt;
+                </div>
+                <form method="POST" action="{{ route($role . '.treatment-records.destroy', $treatmentRecord) }}" class="inline">
                     @csrf
                     @method('DELETE')
-                    &lt;button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this treatment record?')"&gt;
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Are you sure you want to delete this treatment record?')">
                         Delete Record
-                    &lt;/button&gt;
-                &lt;/form&gt;
-            &lt;/div&gt;
-        &lt;/x-card&gt;
-    &lt;/div&gt;
-&lt;/x-layout.app&gt; 
+                    </button>
+                </form>
+            </div>
+        </x-card>
+    </div>
+</x-layout.app> 

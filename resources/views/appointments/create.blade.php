@@ -6,7 +6,10 @@
     &lt;/x-slot&gt;
 
     &lt;x-card&gt;
-        &lt;form method="POST" action="{{ route('appointments.store') }}" class="space-y-6"&gt;
+        @php
+            $role = auth()->user()->role;
+        @endphp
+        <form method="POST" action="{{ route($role . '.appointments.store') }}" class="space-y-6">
             @csrf
 
             &lt;!-- Patient Selection --&gt;
@@ -59,7 +62,7 @@
 
             &lt;!-- Submit Button --&gt;
             &lt;div class="flex justify-end space-x-2"&gt;
-                &lt;a href="{{ route('appointments.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"&gt;
+                &lt;a href="{{ route($role . '.appointments.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"&gt;
                     Cancel
                 &lt;/a&gt;
                 &lt;button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"&gt;

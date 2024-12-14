@@ -41,10 +41,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <x-card title="Quick Actions">
             <div class="space-y-4">
-                <a href="{{ route('patients.create') }}" class="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                <a href="{{ route('employee.patients.create') }}" class="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
                     Register New Patient
                 </a>
-                <a href="{{ route('appointments.create') }}" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">
+                <a href="{{ route('employee.appointments.create') }}" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">
                     Schedule Appointment
                 </a>
             </div>
@@ -59,7 +59,7 @@
                             <p class="font-medium">{{ $patient->patient_name }}</p>
                             <p class="text-sm text-gray-500">Added {{ $patient->created_at->diffForHumans() }}</p>
                         </div>
-                        <a href="{{ route('patients.show', $patient) }}" class="text-blue-500 hover:text-blue-700">
+                        <a href="{{ route('employee.patients.show', $patient) }}" class="text-blue-500 hover:text-blue-700">
                             View Details
                         </a>
                     </div>

@@ -15,8 +15,8 @@ Route::get('/', function () {
 });
 
 // Admin Routes
-Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('patients', PatientController::class);
     Route::resource('dentists', DentistController::class);
     Route::resource('appointments', AppointmentController::class);
@@ -24,16 +24,16 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
 });
 
 // Dentist Routes
-Route::middleware(['auth', 'verified', 'role:dentist'])->prefix('dentist')->group(function () {
-    Route::get('/dashboard', [DentistDashboardController::class, 'index'])->name('dentist.dashboard');
+Route::middleware(['auth', 'verified', 'role:dentist'])->prefix('dentist')->name('dentist.')->group(function () {
+    Route::get('/dashboard', [DentistDashboardController::class, 'index'])->name('dashboard');
     Route::resource('patients', PatientController::class)->only(['index', 'show']);
     Route::resource('appointments', AppointmentController::class);
     Route::resource('treatment-records', TreatmentRecordController::class);
 });
 
 // Employee Routes
-Route::middleware(['auth', 'verified', 'role:employee'])->prefix('employee')->group(function () {
-    Route::get('/dashboard', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');
+Route::middleware(['auth', 'verified', 'role:employee'])->prefix('employee')->name('employee.')->group(function () {
+    Route::get('/dashboard', [EmployeeDashboardController::class, 'index'])->name('dashboard');
     Route::resource('patients', PatientController::class)->only(['index', 'create', 'store', 'show']);
     Route::resource('appointments', AppointmentController::class)->only(['index', 'create', 'store', 'show']);
 });

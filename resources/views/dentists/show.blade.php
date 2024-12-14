@@ -4,8 +4,11 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Dentist Details') }}
             </h2>
-            @if(auth()->user()->role === 'admin')
-                <a href="{{ route('dentists.edit', $dentist) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+            @php
+                $role = auth()->user()->role;
+            @endphp
+            @if($role === 'admin')
+                <a href="{{ route($role . '.dentists.edit', $dentist) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
                     Edit Dentist
                 </a>
             @endif

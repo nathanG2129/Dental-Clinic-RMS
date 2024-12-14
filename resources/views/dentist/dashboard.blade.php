@@ -83,7 +83,7 @@
                         <p class="font-medium">{{ $treatment->patient->patient_name }}</p>
                         <p class="text-sm text-gray-500">{{ $treatment->treatment_type }} - {{ $treatment->treatment_date->format('M d, Y') }}</p>
                     </div>
-                    <a href="{{ route('treatment-records.show', $treatment) }}" class="text-blue-500 hover:text-blue-700">
+                    <a href="{{ route('dentist.treatment-records.show', $treatment) }}" class="text-blue-500 hover:text-blue-700">
                         View Details
                     </a>
                 </div>

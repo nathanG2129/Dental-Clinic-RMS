@@ -13,22 +13,22 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('patients.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('admin.patients.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Patients</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('dentists.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('admin.dentists.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Dentists</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('appointments.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('admin.appointments.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Appointments</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('treatment-records.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('admin.treatment-records.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Treatment Records</span>
                     </a>
                 </li>
@@ -39,17 +39,17 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('patients.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('dentist.patients.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Patients</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('appointments.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('dentist.appointments.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Appointments</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('treatment-records.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('dentist.treatment-records.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Treatment Records</span>
                     </a>
                 </li>
@@ -60,12 +60,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('patients.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('employee.patients.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Patients</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('appointments.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <a href="{{ route('employee.appointments.index') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
                         <span class="ml-3">Appointments</span>
                     </a>
                 </li>

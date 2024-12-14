@@ -6,7 +6,10 @@
     </x-slot>
 
     <x-card>
-        <form method="POST" action="{{ route('dentists.store') }}" class="space-y-6">
+        @php
+            $role = auth()->user()->role;
+        @endphp
+        <form method="POST" action="{{ route($role . '.dentists.store') }}" class="space-y-6">
             @csrf
 
             <!-- Dentist Name -->
@@ -41,7 +44,7 @@
 
             <!-- Submit Button -->
             <div class="flex justify-end space-x-2">
-                <a href="{{ route('dentists.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route($role . '.dentists.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
                     Cancel
                 </a>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">

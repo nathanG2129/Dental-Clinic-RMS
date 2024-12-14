@@ -100,7 +100,7 @@
                             <p class="font-medium">{{ $patient->patient_name }}</p>
                             <p class="text-sm text-gray-500">Added {{ $patient->created_at->diffForHumans() }}</p>
                         </div>
-                        <a href="{{ route('patients.show', $patient) }}" class="text-blue-500 hover:text-blue-700">
+                        <a href="{{ route('admin.patients.show', $patient) }}" class="text-blue-500 hover:text-blue-700">
                             View Details
                         </a>
                     </div>

@@ -6,14 +6,17 @@
     &lt;/x-slot&gt;
 
     &lt;x-card&gt;
-        &lt;form method="POST" action="{{ route('treatment-records.store') }}" class="space-y-6"&gt;
+        @php
+            $role = auth()->user()->role;
+        @endphp
+        <form method="POST" action="{{ route($role . '.treatment-records.store') }}" class="space-y-6">
             @csrf
 
             &lt;!-- Patient Selection --&gt;
             &lt;x-form.select
                 name="patient_id"
                 label="Patient"
-                :options="$patients-&gt;pluck('patient_name', 'patient_id')-&gt;toArray()"
+                :options="$patients->pluck('patient_name', 'patient_id')->toArray()"
                 :value="old('patient_id', request('patient_id'))"
                 required
             /&gt;
@@ -22,7 +25,7 @@
             &lt;x-form.select
                 name="dentist_id"
                 label="Dentist"
-                :options="$dentists-&gt;pluck('dentist_name', 'dentist_id')-&gt;toArray()"
+                :options="$dentists->pluck('dentist_name', 'dentist_id')->toArray()"
                 :value="old('dentist_id', request('dentist_id'))"
                 required
             /&gt;
@@ -70,9 +73,9 @@
                 name="payment_status"
                 label="Payment Status"
                 :options="[
-                    'pending' =&gt; 'Pending',
-                    'partially_paid' =&gt; 'Partially Paid',
-                    'paid' =&gt; 'Paid'
+                    'pending' => 'Pending',
+                    'partially_paid' => 'Partially Paid',
+                    'paid' => 'Paid'
                 ]"
                 required
             /&gt;
@@ -87,7 +90,7 @@
 
             &lt;!-- Submit Button --&gt;
             &lt;div class="flex justify-end space-x-2"&gt;
-                &lt;a href="{{ route('treatment-records.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"&gt;
+                &lt;a href="{{ route($role . '.treatment-records.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"&gt;
                     Cancel
                 &lt;/a&gt;
                 &lt;button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"&gt;
