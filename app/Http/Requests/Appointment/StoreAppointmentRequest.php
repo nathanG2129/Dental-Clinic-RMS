@@ -24,10 +24,21 @@ class StoreAppointmentRequest extends FormRequest
         return [
             'patient_id' => ['required', 'exists:patients,patient_id'],
             'dentist_id' => ['required', 'exists:dentists,dentist_id'],
-            'appointment_date' => ['required', 'date', 'after:today'],
+            'appointment_date' => ['required', 'date', 'after_or_equal:today'],
+            'appointment_time' => ['required', 'date_format:H:i'],
             'purpose_of_appointment' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'in:scheduled,completed,cancelled'],
             'notes' => ['nullable', 'string']
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        // Set default status for new appointments
+        $this->merge([
+            'status' => 'scheduled'
+        ]);
     }
 }

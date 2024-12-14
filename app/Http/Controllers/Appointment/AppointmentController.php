@@ -9,6 +9,7 @@ use App\Models\Appointment;
 use App\Models\Dentist;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -31,14 +32,32 @@ class AppointmentController extends Controller
     {
         $role = auth()->user()->role;
         
-        // Combine date and time into appointment_date
-        $appointmentData = $request->validated();
-        $appointmentData['appointment_date'] = $request->appointment_date . ' ' . $request->appointment_time;
-        unset($appointmentData['appointment_time']); // Remove separate time field
-        
-        $appointment = Appointment::create($appointmentData);
-        return redirect()->route($role . '.appointments.show', $appointment)
-            ->with('success', 'Appointment created successfully.');
+        try {
+            // Get validated data
+            $data = $request->validated();
+            
+            // Combine date and time
+            $appointmentDateTime = Carbon::parse($data['appointment_date'])->format('Y-m-d') . ' ' . $data['appointment_time'];
+            
+            // Create appointment data array
+            $appointmentData = [
+                'patient_id' => $data['patient_id'],
+                'dentist_id' => $data['dentist_id'],
+                'appointment_date' => $appointmentDateTime,
+                'purpose_of_appointment' => $data['purpose_of_appointment'],
+                'status' => 'scheduled',
+                'notes' => $data['notes'] ?? null
+            ];
+            
+            $appointment = Appointment::create($appointmentData);
+            
+            return redirect()->route($role . '.appointments.show', $appointment)
+                ->with('success', 'Appointment scheduled successfully.');
+                
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->with('error', 'Failed to schedule appointment. Please try again.');
+        }
     }
 
     public function show(Appointment $appointment)
@@ -56,15 +75,17 @@ class AppointmentController extends Controller
 
     public function update(UpdateAppointmentRequest $request, Appointment $appointment)
     {
+        $role = auth()->user()->role;
         $appointment->update($request->validated());
-        return redirect()->route('appointments.show', $appointment)
+        return redirect()->route($role . '.appointments.show', $appointment)
             ->with('success', 'Appointment updated successfully.');
     }
 
     public function destroy(Appointment $appointment)
     {
+        $role = auth()->user()->role;
         $appointment->delete();
-        return redirect()->route('appointments.index')
+        return redirect()->route($role . '.appointments.index')
             ->with('success', 'Appointment deleted successfully.');
     }
 } 
