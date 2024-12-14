@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Dentist;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,18 +34,38 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:dentist,employee'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
+
+        // If registering as a dentist, create dentist record
+        if ($request->role === 'dentist') {
+            Dentist::create([
+                'name' => $request->name,
+                'user_id' => $user->id,
+                'specialization' => 'General Dentistry', // Default value
+                'contact_information' => $request->email, // Using email as initial contact
+            ]);
+        }
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect based on role
+        switch ($user->role) {
+            case 'dentist':
+                return redirect()->route('dentist.dashboard');
+            case 'employee':
+                return redirect()->route('employee.dashboard');
+            default:
+                return redirect('/');
+        }
     }
 }

@@ -10,10 +10,8 @@ class Dentist extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = 'dentist_id';
-
     protected $fillable = [
-        'dentist_name',
+        'name',
         'specialization',
         'contact_information',
         'user_id'

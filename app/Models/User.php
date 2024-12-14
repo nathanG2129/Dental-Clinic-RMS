@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -77,5 +78,13 @@ class User extends Authenticatable
     public function isEmployee(): bool
     {
         return $this->hasRole('employee');
+    }
+
+    /**
+     * Get the dentist associated with the user.
+     */
+    public function dentist(): HasOne
+    {
+        return $this->hasOne(Dentist::class);
     }
 }
