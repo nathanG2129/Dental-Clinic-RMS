@@ -29,8 +29,9 @@ class TreatmentRecordController extends Controller
 
     public function store(StoreTreatmentRecordRequest $request)
     {
+        $role = auth()->user()->role;
         $treatmentRecord = TreatmentRecord::create($request->validated());
-        return redirect()->route('treatment-records.show', $treatmentRecord)
+        return redirect()->route($role . '.treatment-records.show', $treatmentRecord)
             ->with('success', 'Treatment record created successfully.');
     }
 
@@ -49,15 +50,17 @@ class TreatmentRecordController extends Controller
 
     public function update(UpdateTreatmentRecordRequest $request, TreatmentRecord $treatmentRecord)
     {
+        $role = auth()->user()->role;
         $treatmentRecord->update($request->validated());
-        return redirect()->route('treatment-records.show', $treatmentRecord)
+        return redirect()->route($role . '.treatment-records.show', $treatmentRecord)
             ->with('success', 'Treatment record updated successfully.');
     }
 
     public function destroy(TreatmentRecord $treatmentRecord)
     {
+        $role = auth()->user()->role;
         $treatmentRecord->delete();
-        return redirect()->route('treatment-records.index')
+        return redirect()->route($role . '.treatment-records.index')
             ->with('success', 'Treatment record deleted successfully.');
     }
 } 

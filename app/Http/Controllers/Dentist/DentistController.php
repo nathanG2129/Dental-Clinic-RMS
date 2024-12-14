@@ -19,14 +19,38 @@ class DentistController extends Controller
 
     public function create()
     {
-        $users = User::where('role', 'dentist')->whereDoesntHave('dentist')->get();
+        $users = User::where('role', 'dentist')
+            ->whereDoesntHave('dentist')
+            ->orderBy('name')
+            ->get(['id', 'name', 'email'])
+            ->map(function($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name . ' (' . $user->email . ')'
+                ];
+            })
+            ->pluck('name', 'id')
+            ->toArray();
+
+        if (empty($users)) {
+            return redirect()->route('admin.dentists.index')
+                ->with('error', 'No available dentist user accounts. Please create a user account with dentist role first.');
+        }
+
         return view('dentists.create', compact('users'));
     }
 
     public function store(StoreDentistRequest $request)
     {
-        $dentist = Dentist::create($request->validated());
-        return redirect()->route('dentists.show', $dentist)
+        $role = auth()->user()->role;
+        $dentist = Dentist::create([
+            'dentist_name' => User::find($request->user_id)->name,
+            'user_id' => $request->user_id,
+            'specialization' => $request->specialization,
+            'contact_information' => $request->contact_information,
+        ]);
+        
+        return redirect()->route($role . '.dentists.show', $dentist)
             ->with('success', 'Dentist created successfully.');
     }
 
@@ -42,21 +66,40 @@ class DentistController extends Controller
             ->where(function($query) use ($dentist) {
                 $query->whereDoesntHave('dentist')
                     ->orWhere('id', $dentist->user_id);
-            })->get();
+            })
+            ->orderBy('name')
+            ->get(['id', 'name', 'email'])
+            ->map(function($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name . ' (' . $user->email . ')'
+                ];
+            })
+            ->pluck('name', 'id')
+            ->toArray();
+
         return view('dentists.edit', compact('dentist', 'users'));
     }
 
     public function update(UpdateDentistRequest $request, Dentist $dentist)
     {
-        $dentist->update($request->validated());
-        return redirect()->route('dentists.show', $dentist)
+        $role = auth()->user()->role;
+        $dentist->update([
+            'dentist_name' => User::find($request->user_id)->name,
+            'user_id' => $request->user_id,
+            'specialization' => $request->specialization,
+            'contact_information' => $request->contact_information,
+        ]);
+        
+        return redirect()->route($role . '.dentists.show', $dentist)
             ->with('success', 'Dentist updated successfully.');
     }
 
     public function destroy(Dentist $dentist)
     {
+        $role = auth()->user()->role;
         $dentist->delete();
-        return redirect()->route('dentists.index')
+        return redirect()->route($role . '.dentists.index')
             ->with('success', 'Dentist deleted successfully.');
     }
 } 

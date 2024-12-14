@@ -23,8 +23,9 @@ class PatientController extends Controller
 
     public function store(StorePatientRequest $request)
     {
+        $role = auth()->user()->role;
         $patient = Patient::create($request->validated());
-        return redirect()->route('patients.show', $patient)
+        return redirect()->route($role . '.patients.show', $patient)
             ->with('success', 'Patient created successfully.');
     }
 
@@ -41,15 +42,17 @@ class PatientController extends Controller
 
     public function update(UpdatePatientRequest $request, Patient $patient)
     {
+        $role = auth()->user()->role;
         $patient->update($request->validated());
-        return redirect()->route('patients.show', $patient)
+        return redirect()->route($role . '.patients.show', $patient)
             ->with('success', 'Patient updated successfully.');
     }
 
     public function destroy(Patient $patient)
     {
+        $role = auth()->user()->role;
         $patient->delete();
-        return redirect()->route('patients.index')
+        return redirect()->route($role . '.patients.index')
             ->with('success', 'Patient deleted successfully.');
     }
 } 

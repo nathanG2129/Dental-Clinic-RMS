@@ -29,8 +29,15 @@ class AppointmentController extends Controller
 
     public function store(StoreAppointmentRequest $request)
     {
-        $appointment = Appointment::create($request->validated());
-        return redirect()->route('appointments.show', $appointment)
+        $role = auth()->user()->role;
+        
+        // Combine date and time into appointment_date
+        $appointmentData = $request->validated();
+        $appointmentData['appointment_date'] = $request->appointment_date . ' ' . $request->appointment_time;
+        unset($appointmentData['appointment_time']); // Remove separate time field
+        
+        $appointment = Appointment::create($appointmentData);
+        return redirect()->route($role . '.appointments.show', $appointment)
             ->with('success', 'Appointment created successfully.');
     }
 
