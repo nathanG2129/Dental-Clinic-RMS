@@ -116,7 +116,6 @@ SEARCH FUNCTIONALITY IMPLEMENTATION PLAN
 PENDING TASKS
 ------------
 
-
 [ ] Documentation
     [ ] User Manual
     [ ] Technical Documentation

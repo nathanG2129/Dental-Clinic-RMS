@@ -12,6 +12,15 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
+     * Get the role-specific dashboard route.
+     */
+    protected function getDashboardRoute(): string
+    {
+        $role = auth()->user()->role;
+        return $role . '.dashboard';
+    }
+
+    /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
