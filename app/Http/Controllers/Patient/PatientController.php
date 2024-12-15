@@ -10,9 +10,35 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::latest()->paginate(10);
+        $query = Patient::query();
+
+        // Search by name or contact information
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('patient_name', 'like', "%{$search}%")
+                  ->orWhere('contact_information', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by gender
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        // Filter by age range
+        if ($request->filled('min_age') || $request->filled('max_age')) {
+            if ($request->filled('min_age')) {
+                $query->whereRaw('TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) >= ?', [$request->min_age]);
+            }
+            if ($request->filled('max_age')) {
+                $query->whereRaw('TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) <= ?', [$request->max_age]);
+            }
+        }
+
+        $patients = $query->latest()->paginate(10)->withQueryString();
         return view('patients.index', compact('patients'));
     }
 

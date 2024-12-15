@@ -11,10 +11,36 @@ use Illuminate\Http\Request;
 
 class DentistController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dentists = Dentist::with('user')->latest()->paginate(10);
-        return view('dentists.index', compact('dentists'));
+        $query = Dentist::with('user');
+
+        // Search by name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('dentist_name', 'like', "%{$search}%");
+        }
+
+        // Filter by specialization
+        if ($request->filled('specialization')) {
+            $query->where('specialization', $request->specialization);
+        }
+
+        // Filter by availability (based on appointments)
+        if ($request->filled('available_date')) {
+            $date = $request->available_date;
+            $query->whereDoesntHave('appointments', function($q) use ($date) {
+                $q->whereDate('appointment_date', $date)
+                  ->where('status', 'scheduled');
+            });
+        }
+
+        $dentists = $query->latest()->paginate(10)->withQueryString();
+        
+        // Get unique specializations for the filter dropdown
+        $specializations = Dentist::distinct()->pluck('specialization');
+        
+        return view('dentists.index', compact('dentists', 'specializations'));
     }
 
     public function create()

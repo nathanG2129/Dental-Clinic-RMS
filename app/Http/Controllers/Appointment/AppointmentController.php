@@ -13,12 +13,54 @@ use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = Appointment::with(['patient', 'dentist'])
-            ->latest()
-            ->paginate(10);
-        return view('appointments.index', compact('appointments'));
+        $query = Appointment::with(['patient', 'dentist']);
+
+        // Search by patient or dentist name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('patient', function($q) use ($search) {
+                    $q->where('patient_name', 'like', "%{$search}%");
+                })->orWhereHas('dentist', function($q) use ($search) {
+                    $q->where('dentist_name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by date range
+        if ($request->filled('start_date')) {
+            $query->whereDate('appointment_date', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('appointment_date', '<=', $request->end_date);
+        }
+
+        // Filter by time range
+        if ($request->filled('start_time')) {
+            $query->whereTime('appointment_date', '>=', $request->start_time);
+        }
+        if ($request->filled('end_time')) {
+            $query->whereTime('appointment_date', '<=', $request->end_time);
+        }
+
+        // Filter by purpose
+        if ($request->filled('purpose')) {
+            $query->where('purpose_of_appointment', 'like', "%{$request->purpose}%");
+        }
+
+        $appointments = $query->latest()->paginate(10)->withQueryString();
+        
+        // Get statuses for dropdown
+        $statuses = ['scheduled', 'completed', 'cancelled'];
+        
+        return view('appointments.index', compact('appointments', 'statuses'));
     }
 
     public function create()

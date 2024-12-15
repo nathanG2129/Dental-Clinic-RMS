@@ -18,33 +18,69 @@
     <x-card>
         <!-- Search and Filters -->
         <div class="mb-6">
-            <form method="GET" action="{{ route($indexRoute) }}">
-                <div class="flex flex-col md:flex-row items-end space-x-0 md:space-x-4 space-y-4 md:space-y-0">
-                    <div class="flex-grow">
-                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Records</label>
+            <form method="GET" action="{{ route($role . '.treatment-records.index') }}">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
                         <input type="text" name="search" id="search" 
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                            placeholder="Search by patient or treatment type..."
+                            placeholder="Search by patient name or treatment type..."
                             value="{{ request('search') }}">
                     </div>
-                    <div class="w-full md:w-48">
+                    <div>
                         <label for="payment_status" class="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
-                        <select id="payment_status" name="payment_status" 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <select name="payment_status" id="payment_status" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                             <option value="">All Statuses</option>
-                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="partially_paid" {{ request('payment_status') == 'partially_paid' ? 'selected' : '' }}>Partially Paid</option>
-                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                            @foreach($paymentStatuses as $status)
+                                <option value="{{ $status }}" {{ request('payment_status') === $status ? 'selected' : '' }}>
+                                    {{ ucfirst($status) }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="w-full md:w-48">
-                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Treatment Date</label>
-                        <input type="date" name="date" id="date" 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                            value="{{ request('date') }}">
+                    <div>
+                        <label for="dentist_id" class="block text-sm font-medium text-gray-700 mb-1">Dentist</label>
+                        <select name="dentist_id" id="dentist_id" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option value="" selected>All Dentists</option>
+                            @foreach($dentists as $dentist)
+                                <option value="{{ $dentist->dentist_id }}" {{ (string)request('dentist_id') === (string)$dentist->dentist_id ? 'selected' : '' }}>
+                                    {{ $dentist->dentist_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                    <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                        Search
+                    <div>
+                        <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                        <input type="date" name="start_date" id="start_date" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            value="{{ request('start_date') }}">
+                    </div>
+                    <div>
+                        <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                        <input type="date" name="end_date" id="end_date" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            value="{{ request('end_date') }}">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label for="min_cost" class="block text-sm font-medium text-gray-700 mb-1">Min Cost</label>
+                            <input type="number" name="min_cost" id="min_cost" 
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                value="{{ request('min_cost') }}"
+                                min="0" step="0.01">
+                        </div>
+                        <div>
+                            <label for="max_cost" class="block text-sm font-medium text-gray-700 mb-1">Max Cost</label>
+                            <input type="number" name="max_cost" id="max_cost" 
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                value="{{ request('max_cost') }}"
+                                min="0" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        Apply Filters
                     </button>
                 </div>
             </form>
