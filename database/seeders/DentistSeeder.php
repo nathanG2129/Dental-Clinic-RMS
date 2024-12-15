@@ -2,23 +2,33 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\Dentist;
 use App\Models\User;
-use Illuminate\Database\Seeder;
 
 class DentistSeeder extends Seeder
 {
     public function run(): void
     {
-        $dentistUsers = User::where('role', 'dentist')->get();
+        $dentistSpecializations = [
+            'Dr. John Smith' => 'General Dentistry',
+            'Dr. Sarah Johnson' => 'Orthodontics',
+            'Dr. Michael Brown' => 'Periodontics',
+            'Dr. Emily Davis' => 'Endodontics',
+            'Dr. David Wilson' => 'Oral Surgery',
+        ];
 
-        foreach ($dentistUsers as $user) {
-            Dentist::create([
-                'dentist_name' => $user->name,
-                'user_id' => $user->id,
-                'specialization' => ['General Dentistry', 'Orthodontics', 'Periodontics'][rand(0, 2)],
-                'contact_information' => '(555) ' . rand(100, 999) . '-' . rand(1000, 9999),
-            ]);
+        foreach ($dentistSpecializations as $name => $specialization) {
+            $user = User::where('name', $name)->first();
+            
+            if ($user) {
+                Dentist::create([
+                    'dentist_name' => $name,
+                    'specialization' => $specialization,
+                    'contact_information' => '+1 (555) ' . rand(100, 999) . '-' . rand(1000, 9999),
+                    'user_id' => $user->id,
+                ]);
+            }
         }
     }
 } 

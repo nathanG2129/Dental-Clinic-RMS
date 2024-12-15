@@ -2,68 +2,83 @@
 
 namespace Database\Seeders;
 
-use App\Models\TreatmentRecord;
 use Illuminate\Database\Seeder;
+use App\Models\TreatmentRecord;
+use App\Models\Patient;
+use App\Models\Dentist;
+use Carbon\Carbon;
 
 class TreatmentRecordSeeder extends Seeder
 {
     public function run(): void
     {
+        $patients = Patient::all();
+        $dentists = Dentist::all();
+        
+        // Define common treatments with their typical costs
         $treatments = [
-            [
-                'patient_id' => 1,
-                'dentist_id' => 1,
-                'treatment_type' => 'Regular Checkup',
-                'treatment_details' => 'Routine dental examination and cleaning',
-                'treatment_date' => '2024-01-19',
+            'Regular Cleaning' => [
                 'cost' => 150.00,
-                'payment_status' => 'paid',
-                'notes' => 'No cavities found'
+                'details' => 'Professional dental cleaning and polishing'
             ],
-            [
-                'patient_id' => 2,
-                'dentist_id' => 1,
-                'treatment_type' => 'Cavity Filling',
-                'treatment_details' => 'Composite filling on upper right molar',
-                'treatment_date' => '2024-01-19',
+            'Deep Cleaning' => [
+                'cost' => 300.00,
+                'details' => 'Deep cleaning and scaling below the gum line'
+            ],
+            'Cavity Filling' => [
                 'cost' => 250.00,
-                'payment_status' => 'pending',
-                'notes' => 'Follow-up in 6 months'
+                'details' => 'Composite filling for dental cavity'
             ],
-            [
-                'patient_id' => 3,
-                'dentist_id' => 2,
-                'treatment_type' => 'Root Canal',
-                'treatment_details' => 'Root canal treatment on lower left premolar',
-                'treatment_date' => '2024-01-18',
+            'Root Canal' => [
                 'cost' => 800.00,
-                'payment_status' => 'partially_paid',
-                'notes' => 'Patient paid $400, remainder due next visit'
+                'details' => 'Root canal treatment including temporary filling'
             ],
-            [
-                'patient_id' => 4,
-                'dentist_id' => 2,
-                'treatment_type' => 'Teeth Whitening',
-                'treatment_details' => 'Professional in-office whitening treatment',
-                'treatment_date' => '2024-01-17',
-                'cost' => 350.00,
-                'payment_status' => 'paid',
-                'notes' => 'Achieved desired shade'
+            'Tooth Extraction' => [
+                'cost' => 200.00,
+                'details' => 'Simple tooth extraction procedure'
             ],
-            [
-                'patient_id' => 5,
-                'dentist_id' => 3,
-                'treatment_type' => 'Dental Crown',
-                'treatment_details' => 'Porcelain crown on upper front tooth',
-                'treatment_date' => '2024-01-16',
+            'Dental Crown' => [
                 'cost' => 1200.00,
-                'payment_status' => 'pending',
-                'notes' => 'Temporary crown placed, permanent crown in 2 weeks'
+                'details' => 'Porcelain crown installation'
+            ],
+            'Teeth Whitening' => [
+                'cost' => 350.00,
+                'details' => 'Professional teeth whitening treatment'
+            ],
+            'X-Ray' => [
+                'cost' => 100.00,
+                'details' => 'Digital dental X-ray imaging'
             ],
         ];
 
-        foreach ($treatments as $treatment) {
-            TreatmentRecord::create($treatment);
+        // Create 50 treatment records over the past 6 months
+        for ($i = 0; $i < 50; $i++) {
+            $treatmentType = array_rand($treatments);
+            $treatment = $treatments[$treatmentType];
+            
+            // Random date within the past 6 months
+            $date = Carbon::now()->subMonths(6)->addDays(rand(0, 180));
+            
+            // Adjust cost slightly for variation
+            $costVariation = rand(-20, 20);
+            $finalCost = $treatment['cost'] + $costVariation;
+            
+            // Determine payment status based on date
+            $paymentStatus = 'paid';
+            if ($date->isAfter(Carbon::now()->subWeeks(2))) {
+                $paymentStatus = ['pending', 'partially_paid', 'paid'][rand(0, 2)];
+            }
+
+            TreatmentRecord::create([
+                'patient_id' => $patients->random()->patient_id,
+                'dentist_id' => $dentists->random()->dentist_id,
+                'treatment_type' => $treatmentType,
+                'treatment_details' => $treatment['details'],
+                'treatment_date' => $date,
+                'cost' => $finalCost,
+                'payment_status' => $paymentStatus,
+                'notes' => $paymentStatus === 'partially_paid' ? 'Remaining balance to be paid' : null,
+            ]);
         }
     }
 } 

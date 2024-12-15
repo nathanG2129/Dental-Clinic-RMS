@@ -2,58 +2,67 @@
 
 namespace Database\Seeders;
 
-use App\Models\Appointment;
 use Illuminate\Database\Seeder;
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\Dentist;
+use Carbon\Carbon;
 
 class AppointmentSeeder extends Seeder
 {
     public function run(): void
     {
-        $appointments = [
-            [
-                'patient_id' => 1,
-                'dentist_id' => 1,
-                'appointment_date' => '2024-01-20 09:00:00',
-                'purpose_of_appointment' => 'Regular Checkup',
-                'status' => 'scheduled',
-                'notes' => 'First time patient'
-            ],
-            [
-                'patient_id' => 2,
-                'dentist_id' => 1,
-                'appointment_date' => '2024-01-20 10:00:00',
-                'purpose_of_appointment' => 'Tooth Cleaning',
-                'status' => 'scheduled',
-                'notes' => null
-            ],
-            [
-                'patient_id' => 3,
-                'dentist_id' => 2,
-                'appointment_date' => '2024-01-21 14:00:00',
-                'purpose_of_appointment' => 'Cavity Filling',
-                'status' => 'scheduled',
-                'notes' => 'Patient requested afternoon appointment'
-            ],
-            [
-                'patient_id' => 4,
-                'dentist_id' => 2,
-                'appointment_date' => '2024-01-19 11:00:00',
-                'purpose_of_appointment' => 'Root Canal',
-                'status' => 'completed',
-                'notes' => 'Follow-up needed in 2 weeks'
-            ],
-            [
-                'patient_id' => 5,
-                'dentist_id' => 3,
-                'appointment_date' => '2024-01-22 15:00:00',
-                'purpose_of_appointment' => 'Orthodontic Consultation',
-                'status' => 'scheduled',
-                'notes' => null
-            ],
+        $patients = Patient::all();
+        $dentists = Dentist::all();
+        
+        // Common dental appointment purposes
+        $purposes = [
+            'Regular Checkup',
+            'Teeth Cleaning',
+            'Cavity Filling',
+            'Root Canal',
+            'Tooth Extraction',
+            'Dental Crown',
+            'Braces Adjustment',
+            'Wisdom Tooth Consultation',
+            'Gum Treatment',
+            'Dental X-Ray'
         ];
 
-        foreach ($appointments as $appointment) {
-            Appointment::create($appointment);
+        // Create appointments for the next 30 days
+        for ($day = 0; $day < 30; $day++) {
+            $date = Carbon::now()->addDays($day);
+            
+            // Skip weekends
+            if ($date->isWeekend()) {
+                continue;
+            }
+
+            // Create 3-5 appointments per day
+            $appointmentsPerDay = rand(3, 5);
+            
+            for ($i = 0; $i < $appointmentsPerDay; $i++) {
+                // Generate appointment time between 9 AM and 4 PM
+                $hour = rand(9, 16);
+                $minute = [0, 30][rand(0, 1)]; // Only allow appointments at :00 or :30
+                
+                $appointmentDateTime = $date->copy()->setHour($hour)->setMinute($minute);
+                
+                // Random status weighted towards 'scheduled' for future dates
+                $status = 'scheduled';
+                if ($date->isPast()) {
+                    $status = ['completed', 'cancelled'][rand(0, 1)];
+                }
+
+                Appointment::create([
+                    'patient_id' => $patients->random()->patient_id,
+                    'dentist_id' => $dentists->random()->dentist_id,
+                    'appointment_date' => $appointmentDateTime,
+                    'purpose_of_appointment' => $purposes[array_rand($purposes)],
+                    'status' => $status,
+                    'notes' => $status === 'cancelled' ? 'Cancelled by patient' : null,
+                ]);
+            }
         }
     }
 } 
