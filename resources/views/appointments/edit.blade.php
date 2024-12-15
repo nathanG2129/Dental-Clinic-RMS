@@ -35,7 +35,7 @@
                     name="appointment_date"
                     label="Date"
                     :value="$appointment-&gt;appointment_date-&gt;format('Y-m-d')"
-                    :min="$appointment-&gt;appointment_date-&gt;format('Y-m-d')"
+                    :min="date('Y-m-d')"
                     required
                 /&gt;
                 &lt;x-form.input

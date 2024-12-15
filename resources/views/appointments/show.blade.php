@@ -61,7 +61,7 @@
         @if($appointment->status === 'scheduled')
             <x-card title="Actions">
                 <div class="space-y-4">
-                    <form method="POST" action="{{ route($role . '.appointments.update', $appointment) }}" class="inline">
+                    <form method="POST" action="{{ route($role . '.appointments.update', $appointment) }}" class="mb-4">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="completed">
@@ -70,7 +70,7 @@
                         </button>
                     </form>
 
-                    <form method="POST" action="{{ route($role . '.appointments.update', $appointment) }}" class="inline">
+                    <form method="POST" action="{{ route($role . '.appointments.update', $appointment) }}">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="status" value="cancelled">
