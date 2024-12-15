@@ -33,6 +33,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'contact_number' => ['required', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string', 'in:dentist,employee'],
         ]);
@@ -50,7 +51,7 @@ class RegisteredUserController extends Controller
                 'dentist_name' => $request->name,
                 'user_id' => $user->id,
                 'specialization' => 'General Dentistry', // Default value
-                'contact_information' => $request->email, // Using email as initial contact
+                'contact_information' => $request->contact_number,
             ]);
         }
 
