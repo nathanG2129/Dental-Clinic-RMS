@@ -6,7 +6,7 @@
     </x-slot>
 
     <x-card>
-        <form method="POST" action="{{ route('dentists.update', $dentist) }}" class="space-y-6">
+        <form method="POST" action="{{ route(auth()->user()->role . '.dentists.update', $dentist) }}" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -35,18 +35,9 @@
                 required
             />
 
-            <!-- Associated User Account -->
-            <x-form.select
-                name="user_id"
-                label="Associated User Account"
-                :options="$users->pluck('name', 'id')->toArray()"
-                :value="$dentist->user_id"
-                required
-            />
-
             <!-- Submit Button -->
             <div class="flex justify-end space-x-2">
-                <a href="{{ route('dentists.show', $dentist) }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route(auth()->user()->role . '.dentists.show', $dentist) }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
                     Cancel
                 </a>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">

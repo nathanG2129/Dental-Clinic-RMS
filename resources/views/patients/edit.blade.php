@@ -6,7 +6,7 @@
     </x-slot>
 
     <x-card>
-        <form method="POST" action="{{ route('patients.update', $patient) }}" class="space-y-6">
+        <form method="POST" action="{{ route(auth()->user()->role . '.patients.update', $patient) }}" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -60,7 +60,7 @@
 
             <!-- Submit Button -->
             <div class="flex justify-end space-x-2">
-                <a href="{{ route('patients.show', $patient) }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route(auth()->user()->role . '.patients.show', $patient) }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
                     Cancel
                 </a>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">

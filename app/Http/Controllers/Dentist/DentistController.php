@@ -66,8 +66,7 @@ class DentistController extends Controller
     {
         $role = auth()->user()->role;
         $dentist->update([
-            'dentist_name' => User::find($request->user_id)->name,
-            'user_id' => $request->user_id,
+            'dentist_name' => $request->dentist_name,
             'specialization' => $request->specialization,
             'contact_information' => $request->contact_information,
         ]);

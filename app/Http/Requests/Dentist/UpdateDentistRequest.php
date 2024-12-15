@@ -22,10 +22,9 @@ class UpdateDentistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'dentist_name' => ['sometimes', 'required', 'string', 'max:255'],
-            'specialization' => ['sometimes', 'required', 'string', 'max:255'],
-            'contact_information' => ['sometimes', 'required', 'string', 'max:255'],
-            'user_id' => ['sometimes', 'required', 'exists:users,id']
+            'dentist_name' => ['required', 'string', 'max:255'],
+            'specialization' => ['required', 'string', 'max:255'],
+            'contact_information' => ['required', 'string', 'max:255'],
         ];
     }
 }
