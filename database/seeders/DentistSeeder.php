@@ -11,11 +11,11 @@ class DentistSeeder extends Seeder
     public function run(): void
     {
         $dentistSpecializations = [
-            'Dr. John Smith' => 'General Dentistry',
-            'Dr. Sarah Johnson' => 'Orthodontics',
-            'Dr. Michael Brown' => 'Periodontics',
-            'Dr. Emily Davis' => 'Endodontics',
-            'Dr. David Wilson' => 'Oral Surgery',
+            'John Smith' => 'General Dentistry',
+            'Sarah Johnson' => 'Orthodontics',
+            'Michael Brown' => 'Periodontics',
+            'Emily Davis' => 'Endodontics',
+            'David Wilson' => 'Oral Surgery',
         ];
 
         foreach ($dentistSpecializations as $name => $specialization) {

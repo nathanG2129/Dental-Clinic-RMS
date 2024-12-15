@@ -21,27 +21,27 @@ class UserSeeder extends Seeder
         // Create dentist users
         $dentists = [
             [
-                'name' => 'Dr. John Smith',
+                'name' => 'John Smith',
                 'email' => 'john.smith@dental.com',
                 'role' => 'dentist',
             ],
             [
-                'name' => 'Dr. Sarah Johnson',
+                'name' => 'Sarah Johnson',
                 'email' => 'sarah.johnson@dental.com',
                 'role' => 'dentist',
             ],
             [
-                'name' => 'Dr. Michael Brown',
+                'name' => 'Michael Brown',
                 'email' => 'michael.brown@dental.com',
                 'role' => 'dentist',
             ],
             [
-                'name' => 'Dr. Emily Davis',
+                'name' => 'Emily Davis',
                 'email' => 'emily.davis@dental.com',
                 'role' => 'dentist',
             ],
             [
-                'name' => 'Dr. David Wilson',
+                'name' => 'David Wilson',
                 'email' => 'david.wilson@dental.com',
                 'role' => 'dentist',
             ],
