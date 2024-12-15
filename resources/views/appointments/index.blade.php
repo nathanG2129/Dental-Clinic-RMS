@@ -15,36 +15,33 @@
 
     <x-card>
         <!-- Search and Filters -->
-        <div class="mb-4 space-y-4">
-            <form method="GET" action="{{ route($role . '.appointments.index') }}" class="flex flex-col md:flex-row gap-4">
-                <x-form.input 
-                    name="search" 
-                    label="Search Appointments"
-                    value="{{ request('search') }}"
-                    placeholder="Search by patient or dentist name..."
-                    class="flex-1"
-                />
-                <x-form.select
-                    name="status"
-                    label="Status"
-                    :value="request('status')"
-                    :options="[
-                        '' => 'All Statuses',
-                        'scheduled' => 'Scheduled',
-                        'completed' => 'Completed',
-                        'cancelled' => 'Cancelled'
-                    ]"
-                    class="flex-1"
-                />
-                <x-form.input
-                    type="date"
-                    name="date"
-                    label="Date"
-                    value="{{ request('date') }}"
-                    class="flex-1"
-                />
-                <div class="flex items-end">
-                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+        <div class="mb-6">
+            <form method="GET" action="{{ route($role . '.appointments.index') }}">
+                <div class="flex flex-col md:flex-row items-end space-x-0 md:space-x-4 space-y-4 md:space-y-0">
+                    <div class="flex-grow">
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Appointments</label>
+                        <input type="text" name="search" id="search" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            placeholder="Search by patient or dentist name..."
+                            value="{{ request('search') }}">
+                    </div>
+                    <div class="w-full md:w-48">
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select id="status" name="status" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option value="">All Statuses</option>
+                            <option value="scheduled" {{ request('status') == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
+                            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-48">
+                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                        <input type="date" name="date" id="date" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            value="{{ request('date') }}">
+                    </div>
+                    <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                         Search
                     </button>
                 </div>

@@ -17,36 +17,33 @@
 
     <x-card>
         <!-- Search and Filters -->
-        <div class="mb-4 space-y-4">
-            <form method="GET" action="{{ route($indexRoute) }}" class="flex flex-col md:flex-row gap-4">
-                <x-form.input 
-                    name="search" 
-                    label="Search Records"
-                    value="{{ request('search') }}"
-                    placeholder="Search by patient or treatment type..."
-                    class="flex-1"
-                />
-                <x-form.select
-                    name="payment_status"
-                    label="Payment Status"
-                    :value="request('payment_status')"
-                    :options="[
-                        '' => 'All Statuses',
-                        'pending' => 'Pending',
-                        'partially_paid' => 'Partially Paid',
-                        'paid' => 'Paid'
-                    ]"
-                    class="flex-1"
-                />
-                <x-form.input
-                    type="date"
-                    name="date"
-                    label="Treatment Date"
-                    value="{{ request('date') }}"
-                    class="flex-1"
-                />
-                <div class="flex items-end">
-                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+        <div class="mb-6">
+            <form method="GET" action="{{ route($indexRoute) }}">
+                <div class="flex flex-col md:flex-row items-end space-x-0 md:space-x-4 space-y-4 md:space-y-0">
+                    <div class="flex-grow">
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Records</label>
+                        <input type="text" name="search" id="search" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            placeholder="Search by patient or treatment type..."
+                            value="{{ request('search') }}">
+                    </div>
+                    <div class="w-full md:w-48">
+                        <label for="payment_status" class="block text-sm font-medium text-gray-700 mb-1">Payment Status</label>
+                        <select id="payment_status" name="payment_status" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option value="">All Statuses</option>
+                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="partially_paid" {{ request('payment_status') == 'partially_paid' ? 'selected' : '' }}>Partially Paid</option>
+                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-48">
+                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Treatment Date</label>
+                        <input type="date" name="date" id="date" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            value="{{ request('date') }}">
+                    </div>
+                    <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                         Search
                     </button>
                 </div>
