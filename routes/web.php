@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified', 'role:dentist'])->prefix('dentist')->name
     Route::resource('patients', PatientController::class)->only(['index', 'show']);
     Route::resource('appointments', AppointmentController::class);
     Route::resource('treatment-records', TreatmentRecordController::class);
+    Route::resource('dentists', DentistController::class)->only(['show']);
 });
 
 // Employee Routes
